@@ -1,7 +1,7 @@
 # Advent of Code
 
 ## Overview
-This repository contains my Go solutions for [Advent of Code 2025](https://adventofcode.com/2025)challenges.
+This repository contains my Go solutions for [Advent of Code 2025](https://adventofcode.com/2025) challenges.
 
 ## Running Solutions
 ```bash
