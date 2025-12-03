@@ -118,11 +118,66 @@ func Part1(input string) int {
 	return total
 }
 
-func Part2(input string) int {
-	parsed := parseInput(input)
-	_ = parsed
+func checkForInvalid_v2(value int) bool {
 
-	return 2
+	// Note:
+	// create a window that slides over everything
+	// if the window doesn't fit
+	// have a temp window that takes account of all things the window has passed
+	// then append the next non fitting number
+
+	//   123123123
+	//   [ 1 ]
+	//   [ 1 2 ]
+	//   [ 1 2 3 ]
+	//   *tick*
+
+	string_value := strconv.Itoa(value)
+	window := []byte{string_value[0]}
+	count := 0
+	needed_count := len(string_value) - 1
+
+	for i := 0; i < needed_count; i++ {
+
+		// modulus of the index of the windows len
+		if string_value[i] == window[i%len(window)] {
+			count++
+		} else {
+
+			// Reset to start with new window
+			window = append(window, string_value[i])
+			i = 0
+			count = 0
+		}
+
+		fmt.Printf("%v : %v\n", string_value[i], window)
+
+	}
+
+	if count == needed_count {
+		return true
+	}
+	return false
+}
+
+func Part2(input string) int {
+
+	total := 0
+	ranges := parseInput(input)
+
+	for _, r := range ranges {
+
+		for i := r.lower; i <= r.higher; i++ {
+
+			if checkForInvalid_v2(i) {
+				total += i
+			}
+
+		}
+	}
+
+	return total
+
 }
 
 // +==================================================+
@@ -142,7 +197,7 @@ func init() {
 
 func main() {
 	var part int
-	flag.IntVar(&part, "part", 1, "part 1 or 2")
+	flag.IntVar(&part, "part", 0, "part 1 or 2")
 	flag.Parse()
 
 	logger := utils.NewPartLogger("day02")

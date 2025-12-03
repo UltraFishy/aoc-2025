@@ -53,7 +53,7 @@ func init() {
 
 func main() {
 	var part int
-	flag.IntVar(&part, "part", 1, "part 1 or 2")
+	flag.IntVar(&part, "part", 0, "part 1 or 2")
 	flag.Parse()
 
 	logger := utils.NewPartLogger("")
