@@ -72,7 +72,7 @@ func numAdjacent(target_x int, target_y int, grid [][]int) int {
 			continue
 		}
 
-		if grid[y][x] == 1 {
+		if grid[y][x] == 1 || grid[y][x] == 2 {
 			count++
 		}
 
@@ -99,11 +99,56 @@ func Part1(input string) int {
 	return count
 }
 
-func Part2(input string) int {
-	parsed := parseInput(input)
-	_ = parsed
+// PART 2
+func fillGrid(grid [][]int) bool {
 
-	return 2
+	rolls_changes := false
+
+	for i, rows := range grid {
+		for j := range rows {
+
+			roll_count := numAdjacent(i, j, grid)
+			if roll_count < 4 && grid[j][i] == 1 {
+				grid[j][i] = 2
+				rolls_changes = true
+			}
+		}
+	}
+
+	return rolls_changes
+}
+
+func changeGrid(grid [][]int) int {
+	count := 0
+	for i, rows := range grid {
+		for j := range rows {
+			if grid[j][i] == 2 {
+				grid[j][i] = 0
+				count++
+			}
+		}
+	}
+
+	return count
+}
+
+func Part2(input string) int {
+
+	// NOTE:
+	// - function that changes the grid
+	// - function that takes the grid
+	// - loop
+
+	grid := parseInput(input)
+	total := 0
+	t := true
+
+	for t {
+		t = fillGrid(grid)
+		total += changeGrid(grid)
+	}
+
+	return total
 }
 
 // +==================================================+
