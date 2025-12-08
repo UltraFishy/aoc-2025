@@ -1,0 +1,69 @@
+package main_test
+
+import (
+	"aoc-2025/days/day08" // add current day path
+	"testing"
+)
+
+var example = `162,817,812
+57,618,57
+906,360,560
+592,479,940
+352,342,300
+466,668,158
+542,29,236
+431,825,988
+739,650,466
+52,470,668
+216,146,977
+819,987,18
+117,168,530
+805,96,715
+346,949,466
+970,615,88
+941,993,340
+862,61,35
+984,92,344
+425,690,689`
+
+func Test_part1(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  int
+	}{
+		{
+			name:  "Part 1 Test",
+			input: example,
+			want:  40,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := main.Part1(tt.input); got != tt.want {
+				t.Errorf("part1() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func Test_part2(t *testing.T) {
+	tests := []struct {
+		name  string
+		input string
+		want  int
+	}{
+		{
+			name:  "Part 2 Test",
+			input: example,
+			want:  2,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := main.Part2(tt.input); got != tt.want {
+				t.Errorf("part2() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
