@@ -118,45 +118,59 @@ func Part1(input string) int {
 	return total
 }
 
+func kmpPrefixFunction(input string) []int {
+	n := len(input)
+	pi := make([]int, n)
+
+	for i := 1; i < n; i++ {
+		j := pi[i-1]
+
+		for j > 0 && input[i] != input[j] {
+			j = pi[j-1]
+		}
+
+		if input[i] == input[j] {
+			j++
+		}
+
+		pi[i] = j
+	}
+
+	return pi
+}
+
 func checkForInvalid_v2(value int) bool {
 
 	// Note:
-	// create a window that slides over everything
-	// if the window doesn't fit
-	// have a temp window that takes account of all things the window has passed
-	// then append the next non fitting number
-
-	//   123123123
-	//   [ 1 ]
-	//   [ 1 2 ]
-	//   [ 1 2 3 ]
-	//   *tick*
+	// Uses KMP algorithm
+	// Count starting zeros,
+	// mod with last index
+	// if mod == 0 then patterns fit
 
 	string_value := strconv.Itoa(value)
-	window := []byte{string_value[0]}
+	result := kmpPrefixFunction(string_value)
+
 	count := 0
-	needed_count := len(string_value) - 1
 
-	for i := 0; i < needed_count; i++ {
+	for i, num := range result {
 
-		// modulus of the index of the windows len
-		if string_value[i] == window[i%len(window)] {
-			count++
-		} else {
-
-			// Reset to start with new window
-			window = append(window, string_value[i])
-			i = 0
-			count = 0
+		if num == 0 {
+			if i > 0 {
+				count += result[i-1] + 1
+			} else {
+				count++
+			}
+			continue
 		}
 
-		fmt.Printf("%v : %v\n", string_value[i], window)
-
 	}
 
-	if count == needed_count {
+	last_index := len(result) - 1
+
+	if result[last_index] != 0 && result[last_index]%count == 0 {
 		return true
 	}
+
 	return false
 }
 
@@ -164,6 +178,7 @@ func Part2(input string) int {
 
 	total := 0
 	ranges := parseInput(input)
+	saved := []int{}
 
 	for _, r := range ranges {
 
@@ -171,6 +186,8 @@ func Part2(input string) int {
 
 			if checkForInvalid_v2(i) {
 				total += i
+				saved = append(saved, i)
+
 			}
 
 		}
